@@ -15,7 +15,6 @@ list <- 1:k
 # Random forest
 
 predictionRF <- data.frame()
-errorRatesRF <- data.frame()
 testsetCopyRF <- data.frame()
 
 # Run cross validation across k folds, storing predictions and actual values for later comparison
@@ -32,12 +31,11 @@ result <- cbind(predictionRF, testsetCopyRF[, 1])
 names(result) <- c("Prediction", "Actual")
 result$Difference <- abs(as.numeric(result$Actual) - as.numeric(result$Prediction))
 result$Error <- as.numeric(result$Difference > 0)
-totalErrors <- sum(result$Error)
-averageErrors <- totalErrors / nrow(result)
-errorRateRF <- averageErrors
+totalErrorsRF <- sum(result$Error)
+numTrainingRecords <- nrow(result)
+errorRateRF <- totalErrorsRF / numTrainingRecords
 
 predictionKNN <- data.frame()
-errorRatesKNN <- data.frame()
 testsetCopyKNN <- data.frame()
 
 # Run cross validation across k folds, storing predictions and actual values for later comparison
@@ -54,6 +52,6 @@ result <- cbind(predictionKNN, testsetCopyKNN[, 1])
 names(result) <- c("Prediction", "Actual")
 result$Difference <- abs(as.numeric(result$Actual) - as.numeric(result$Prediction))
 result$Error <- as.numeric(result$Difference > 0)
-totalErrors <- sum(result$Error)
-averageErrors <- totalErrors / nrow(result)
-errorRateKNN <- averageErrors
+totalErrorsKNN <- sum(result$Error)
+numTrainingRecords <- nrow(result)
+errorRateKNN <- totalErrorsKNN / numTrainingRecords
