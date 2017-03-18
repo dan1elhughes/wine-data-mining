@@ -28,14 +28,11 @@ print(pcaResults$rotation[,1])
 print(pcaResults$rotation[,2])
 
 # Define "original data" colour palette
-palette(c("red", "blue", "green"))
+palette(c("red", "green", "blue"))
 
 # View graph with colours as predefined classes
 pcaResults$colour <- as.factor(wine[,1])
-plot(pcaResults$x[,1], pcaResults$x[,2], col=pcaResults$colour, pch=16)
-
-# Disable randomised starting clusters to ensure reproducibility
-set.seed(10)
+plot(pcaResults$x[,1], pcaResults$x[,2], col=pcaResults$colour, pch=16, xlim=c(-1000,500), ylim=c(-60,30))
 
 # Copy the PCA values into wine data set
 winePCA <- cbind(wine, pcaResults$x[,1:2])
@@ -44,11 +41,11 @@ winePCA <- cbind(wine, pcaResults$x[,1:2])
 clusterResults <- kmeans(winePCA[, 15:16], 3)
 
 # Change colour palette
-palette(c("yellow", "magenta", "cyan"))
+palette(c("orange", "magenta", "cyan"))
 
 # Plot PCAs with colours coming from the clustering result
 pcaResults$cluster <- as.factor(clusterResults$cluster)
-plot(pcaResults$x[,1], pcaResults$x[,2], col=pcaResults$cluster, pch=16)
+plot(pcaResults$x[,1], pcaResults$x[,2], col=pcaResults$cluster, pch=16, xlim=c(-1000,500), ylim=c(-60,30))
 
 # Store calculated cluster in wine data
 winePCA$cluster <- clusterResults$cluster
@@ -57,15 +54,16 @@ winePCA$cluster <- clusterResults$cluster
 palette(c("red", "blue", "green"))
 
 cluster1 <- winePCA[winePCA$cluster == 1,]
-plot(cluster1$PC1, cluster1$PC2, col=cluster1$class, pch=16)
+plot(cluster1$PC1, cluster1$PC2, col=cluster1$class, pch=16, xlim=c(-1000,500), ylim=c(-60,30))
 
-cluster2 <- winePCA[winePCA$cluster == 2,]
-plot(cluster2$PC1, cluster2$PC2, col=cluster2$class, pch=16)
+cluster2 <- winePCA[winePCA$cluster == 3,]
+plot(cluster2$PC1, cluster2$PC2, col=cluster2$class, pch=16, xlim=c(-1000,500), ylim=c(-60,30))
 
-cluster3 <- winePCA[winePCA$cluster == 3,]
-plot(cluster3$PC1, cluster3$PC2, col=cluster3$class, pch=16)
+cluster3 <- winePCA[winePCA$cluster == 2,]
+plot(cluster3$PC1, cluster3$PC2, col=cluster3$class, pch=16, xlim=c(-1000,500), ylim=c(-60,30))
 
 clusterResults
+
 # Within cluser sum of squares by cluster comes out as 86.5%. Define what this is, compare a few
 # runs, cluster cohesion in the slides
 
@@ -84,11 +82,11 @@ pcaResults12 <- prcomp(wine12WithoutLabels)
 plot(pcaResults12, type = "l")
 
 # Define "original data" colour palette
-palette(c("red", "blue", "green"))
+palette(c("red", "green", "blue"))
 
 # View graph with colours as predefined classes
 pcaResults12$colour <- as.factor(wine[,1])
-plot(pcaResults12$x[,1], pcaResults12$x[,2], col=pcaResults12$colour, pch=16)
+plot(pcaResults12$x[,1], pcaResults12$x[,2], col=pcaResults12$colour, pch=16, xlim=c(-5,5), ylim=c(-5,5))
 
 # Copy the PCA values into wine12 data set
 wine12PCA <- as.data.frame(cbind(class=wine12$class, pcaResults12$x[,1:2]))
@@ -97,28 +95,28 @@ wine12PCA <- as.data.frame(cbind(class=wine12$class, pcaResults12$x[,1:2]))
 cluster12Results <- kmeans(wine12PCA[, 2:3], 3)
 
 # Change colour palette
-palette(c("yellow", "magenta", "cyan"))
+palette(c("orange", "magenta", "cyan"))
 
 # Plot PCAs with colours coming from the clustering result
 pcaResults12$cluster <- as.factor(cluster12Results$cluster)
-plot(pcaResults12$x[,1], pcaResults12$x[,2], col=pcaResults12$cluster, pch=16)
+plot(pcaResults12$x[,1], pcaResults12$x[,2], col=pcaResults12$cluster, pch=16, xlim=c(-5,5), ylim=c(-5,5))
 
 # Store calculated cluster in wine12 data
 wine12PCA <- cbind(wine12PCA, cluster=cluster12Results$cluster)
 
 # Display each cluster with the colour coming from its original class
-palette(c("red", "blue", "green"))
+palette(c("red", "green", "blue"))
 
 summary(wine12PCA)
 
-cluster121 <- wine12PCA[wine12PCA$cluster == 1,]
-plot(cluster121$PC1, cluster121$PC2, col=cluster121$class, pch=16)
+cluster121 <- wine12PCA[wine12PCA$cluster == 3,]
+plot(cluster121$PC1, cluster121$PC2, col=cluster121$class, pch=16, xlim=c(-5,5), ylim=c(-5,5))
 
 cluster122 <- wine12PCA[wine12PCA$cluster == 2,]
-plot(cluster122$PC1, cluster122$PC2, col=cluster122$class, pch=16)
+plot(cluster122$PC1, cluster122$PC2, col=cluster122$class, pch=16, xlim=c(-5,5), ylim=c(-5,5))
 
-cluster123 <- wine12PCA[wine12PCA$cluster == 3,]
-plot(cluster123$PC1, cluster123$PC2, col=cluster123$class, pch=16)
+cluster123 <- wine12PCA[wine12PCA$cluster == 1,]
+plot(cluster123$PC1, cluster123$PC2, col=cluster123$class, pch=16, xlim=c(-5,5), ylim=c(-5,5))
 
 cluster12Results
 # Within cluser sum of squares by cluster comes out as 79.7%. Define what this is, compare a few
