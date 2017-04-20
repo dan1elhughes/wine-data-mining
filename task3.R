@@ -30,16 +30,20 @@ predictions <- cbind(results, newTestingData$V29)
 names(predictions) <- c("Prediction", "Actual")#
 
 # Calculate various counts of positives
-foundPositives <- sum(as.numeric(predictions$Prediction == "signal"))
-correctPositives <- sum(as.numeric(predictions$Prediction == "signal" & predictions$Actual == "signal"))
-allPositives <- sum(as.numeric(predictions$Actual == "signal"))
+truePositives <- sum(as.numeric(predictions$Prediction == "signal" & predictions$Actual == "signal"))
+falsePositives <- sum(as.numeric(predictions$Prediction == "signal" & predictions$Actual == "background"))
+trueNegatives <- sum(as.numeric(predictions$Prediction == "background" & predictions$Actual == "background"))
+falseNegatives <- sum(as.numeric(predictions$Prediction == "background" & predictions$Actual == "signal"))
+
+predictedPositives <- sum(as.numeric(predictions$Prediction == "signal"))
+actualPositives <- sum(as.numeric(predictions$Actual == "signal"))
 
 correctPredictions <- sum(as.numeric(predictions$Prediction == predictions$Actual))
 
 # Calculate required indices
-precision <- correctPositives / foundPositives
-recall <- correctPositives / allPositives
-accuracy <- correctPositives / nrow(predictions)
+precision <- truePositives / (truePositives + falsePositives)
+recall <- truePositives / (truePositives + falseNegatives)
+accuracy <- (truePositives + trueNegatives) / nrow(predictions)
 fMeasure <- 2 * (precision * recall) / (precision + recall)
 
 actualPredictions <- as.data.frame(predict(randomForestModel, test))
